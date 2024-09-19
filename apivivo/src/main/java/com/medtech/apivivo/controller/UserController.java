@@ -7,9 +7,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Random;
 
+import com.medtech.apivivo.model.DescriptionsModel;
+import com.medtech.apivivo.model.ProductModel;
 import com.medtech.apivivo.model.UserModel;
+import com.medtech.apivivo.repository.DescriptionsRepository;
+import com.medtech.apivivo.repository.IdentifiersRepository;
+import com.medtech.apivivo.repository.PricesRepository;
+import com.medtech.apivivo.repository.ProductRepository;
+import com.medtech.apivivo.repository.TagsRepository;
 import com.medtech.apivivo.repository.UserRepository;
 
 
@@ -20,6 +29,17 @@ public class UserController {
     // com anotação @Service, @Beans, etc
     @Autowired
 	public UserRepository userRepository;
+    @Autowired
+	public DescriptionsRepository descriptionsRepository;
+    @Autowired
+	public IdentifiersRepository identifiersRepository;
+    @Autowired
+	public PricesRepository pricesRepository;
+    @Autowired
+	public ProductRepository productRepository;
+    @Autowired
+	public TagsRepository tagsRepository;
+
     private UserModel User;
 
     // Get - Trazer, Post - Cadastrar, Put - Editar, Patch - Editar, Delete - Deletar
@@ -59,7 +79,7 @@ public class UserController {
     
     // Get - Trazer, Post - Cadastrar, Put - Editar, Patch - Editar, Delete - Deletar
     @GetMapping(value = "/users/{id}/products")
-    @Operation(summary = "Retorna os produtos contratados de um cliente com um delay programavel")
+    @Operation(summary = "Retorna os produtos contratados de um cliente sem delay adicionado")
     @ApiResponse(
             responseCode = "200",
             description = "Sucesso"
@@ -74,6 +94,24 @@ public class UserController {
         UserModel currentUser = user;
         currentUser.setIdUser(id);
         userRepository.save(currentUser);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/users/new")
+    public ResponseEntity create(@RequestBody @Validated UserModel user ){
+        UserModel currentUser = user;
+        List<ProductModel> products = currentUser.getProduct();
+        
+        for (ProductModel product : products) {
+            descriptionsRepository.saveAll(product.getDescriptions());
+            identifiersRepository.saveAll(product.getIdentifiers());
+            tagsRepository.saveAll(product.getTags());
+            pricesRepository.saveAll(product.getPrices());
+        }
+        productRepository.saveAll(products);
+        userRepository.save(currentUser);
+
+        
         return ResponseEntity.ok().build();
     }
 

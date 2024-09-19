@@ -104,8 +104,6 @@ public class UserController {
         }
         User user = result.getBody();
 
-        repo.save(user);
-
         return result;
 
     }
@@ -138,4 +136,5 @@ public class UserController {
         repo.save(currentUser);
         return result.ok().build();
     }
+
 }
