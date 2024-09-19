@@ -9,4 +9,3 @@ insert into tb_descriptions (id, text, product_id) values (1, 'Linha móvel com 
 
 insert into tb_identifiers (id, identifier, product_id) values (1, '+51939791073', '24522345245sfgas')
 insert into tb_identifiers (id, identifier, product_id) values (2, '+51939791073', '24523asfgaswtrwetr')
-

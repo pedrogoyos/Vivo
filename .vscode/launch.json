@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ApivivoApplication<apivivo>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.medtech.apivivo.ApivivoApplication",
+            "projectName": "apivivo",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

@@ -20,14 +20,21 @@ public class UserController {
 	public UserRepository userRepository;
 
     // Get - Trazer, Post - Cadastrar, Put - Editar, Patch - Editar, Delete - Deletar
-    @GetMapping(value = "/users/{id}/products")
+    @GetMapping(value = "/users/{id}/products/{wait}")
     @Operation(summary = "Retorna os produtos contratados de um cliente")
     @ApiResponse(
             responseCode = "200",
             description = "Sucesso"
     )
-    public ResponseEntity<UserModel> findById(@PathVariable("id") long id) {
-        return new ResponseEntity(userRepository.findById(id).get(), HttpStatus.OK);
+    public ResponseEntity<UserModel> findById(@PathVariable("id") long id, @PathVariable("wait") long wait) {
+    
+            try {
+                Thread.sleep(wait*1000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return new ResponseEntity(userRepository.findById(id).get(), HttpStatus.OK);
     }
 
 
